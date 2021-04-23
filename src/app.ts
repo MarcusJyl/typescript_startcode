@@ -9,29 +9,18 @@ import friendsRoutes from "./routes/friendRoutesAuth";
 //import friendsRoutes from "./routes/friendRoutes";
 const debug = require("debug")("app")
 import { Request, Response, NextFunction } from "express"
+import cors from "cors"
 
 const app = express()
 
 app.use(express.json())
 
-//SIMPLE LOGGER
-//Please verify whether this works (requires app in your DEBUG variable, like DEBUG=www,app)
-//If not replace with a console.log statement, or better the "advanced logger" refered to in the exercises
 app.use((req, res, next) => {
   debug(new Date().toLocaleDateString(), req.method, req.originalUrl, req.ip)
   next()
 })
 
-//WINSTON/MORGAN-LOGGER (Use ONLY one of them)
-// import logger, { stream } from "./middleware/logger";
-// const morganFormat = process.env.NODE_ENV == "production" ? "combined" : "dev"
-// app.use(require("morgan")(morganFormat, { stream }));
-// app.set("logger", logger) 
-//The line above sets the logger as a global key on the application object
-//You can now use it from all your middlewares like this req.app.get("logger").log("info","Message")
-//Level can be one of the following: error, warn, info, http, verbose, debug, silly
-//Level = "error" will go to the error file in production
-
+app.use(cors())
 
 app.use(express.static(path.join(process.cwd(), "public")))
 
@@ -40,6 +29,16 @@ app.use("/api/friends", friendsRoutes)
 app.get("/demo", (req, res) => {
   res.send("Server is up");
 })
+
+import { graphqlHTTP } from 'express-graphql';
+import { schema } from './graphql/schemas';
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: true,
+}));
+
+
 
 //Our own default 404-handler for api-requests
 app.use("/api", (req: any, res: any, next) => {
