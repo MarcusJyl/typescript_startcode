@@ -36,13 +36,24 @@ const typeDefs = `
         password: String
         email: String!
     }
+
+    input PositionInput{
+        email: String!
+        longitude: Float!
+        latitide: Float!
+    }
+
     type Mutation {
         """
         Allows anyone (non authenticated users) to create a new friend
         """
         createFriend(input: FriendInput): Friend
+
+        addPosition(input: PositionInput): Boolean
        
     }
+    
+    
 `;
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });

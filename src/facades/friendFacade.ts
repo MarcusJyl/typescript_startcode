@@ -119,12 +119,12 @@ class FriendsFacade {
   }
 
   /* END OF ALL HTE NEW STUFF YOU SHOULD ADD TO YOUR OWN CODE */
-  /*
+  
   /**
    * 
    * @param friend 
    * @throws ApiError if validation fails
-   
+   */
   async addFriend(friend: IFriend): Promise<{ id: String }> {
     const status = USER_INPUT_SCHEMA.validate(friend);
     if (status.error) {
@@ -141,7 +141,7 @@ class FriendsFacade {
    * @param email 
    * @param friend 
    * @throws ApiError if validation fails or friend was not found
-   
+   */
   async editFriend(email: string, friend: IFriend): Promise<{ modifiedCount: number }> {
     const status = USER_INPUT_SCHEMA.validate(friend);
     if (status.error) {
@@ -161,7 +161,7 @@ class FriendsFacade {
    * 
    * @param friendEmail 
    * @returns true if deleted otherwise false
-   
+   */
   async deleteFriend(friendEmail: string): Promise<boolean> {
     const res = await (await this.friendCollection.deleteOne({email: friendEmail})).deletedCount
     return res === 1 
@@ -177,12 +177,13 @@ class FriendsFacade {
    * @param friendEmail 
    * @returns 
    * @throws ApiError if not found
+   */
    
   async getFrind(friendEmail: string): Promise<IFriend> {
      const friend = this.friendCollection.findOne({email: friendEmail})
      return friend
   }
-  */
+  
   /*
    * Use this method for authentication
    * @param friendEmail 
